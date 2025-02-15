@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import ErrorPage from "./ErrorPage"; // ✅ Import ErrorPage
+import ErrorPage from "./ErrorPage";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -27,7 +27,6 @@ const PreviewPage = () => {
     }
   }, [filePath]);
 
-  // ✅ Function to trigger file download
   const handleDownload = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
@@ -35,15 +34,15 @@ const PreviewPage = () => {
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      
-      const a = document.createElement("a"); // ✅ Create download link dynamically
+
+      const a = document.createElement("a");
       a.href = url;
-      a.download = filePath.split("/").pop(); // ✅ Set correct filename
+      a.download = filePath.split("/").pop();
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      
-      window.URL.revokeObjectURL(url); // ✅ Cleanup blob URL
+
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download error:", error);
       alert("Failed to download file.");
@@ -51,7 +50,7 @@ const PreviewPage = () => {
   };
 
   if (error) {
-    return <ErrorPage message={error} />; // ✅ Show error page if file doesn't exist
+    return <ErrorPage message={error} />;
   }
 
   return (
@@ -60,7 +59,9 @@ const PreviewPage = () => {
       {fileUrl ? (
         <>
           <div style={styles.buttonContainer}>
-            <button style={styles.downloadButton} onClick={handleDownload}>⬇ Download</button> {/* ✅ Click to force download */}
+            <button style={styles.downloadButton} onClick={() => window.history.back()}>Back</button>
+            <hr></hr>
+            <button style={styles.downloadButton} onClick={handleDownload}>⬇ Download</button>
           </div>
           <object data={fileUrl} type="application/pdf" style={styles.pdf}>
             <p>Preview not supported. <a href={fileUrl} download>Download file</a></p>

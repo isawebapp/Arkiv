@@ -4,9 +4,6 @@ const jwt = require("jsonwebtoken");
 const db = require("../database");
 const router = express.Router();
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
@@ -34,17 +31,6 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   res.json({ token });
-});
-
-router.post("/admin-login", (req, res) => {
-  const { username, password } = req.body;
-
-  if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-    const token = jwt.sign({ isAdmin: true }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    return res.json({ token });
-  }
-
-  res.status(401).json({ error: "Invalid admin credentials" });
 });
 
 router.get("/me", (req, res) => {

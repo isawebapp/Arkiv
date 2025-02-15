@@ -31,18 +31,18 @@ const FileExplorer = () => {
   }
 
   const handleOpenFolder = (folderName) => {
-    navigate(`/${currentPath ? `${currentPath}/` : ""}${folderName}`);
+    navigate(`/explorer/${currentPath ? `${currentPath}/` : ""}${folderName}`);
   };
 
   const handleGoBack = () => {
     const parentPath = currentPath.split("/").slice(0, -1).join("/");
-    navigate(`/${parentPath}`);
+    navigate(`/explorer/${parentPath}`);
   };
 
   const handleOpenFile = (fileName) => {
     const filePath = `${currentPath ? `${currentPath}/` : ""}${fileName}`;
     const previewUrl = `/preview?filePath=${encodeURIComponent(filePath)}`;
-    window.open(previewUrl, "_blank");
+    navigate(previewUrl);
   };
 
   return (

@@ -5,20 +5,15 @@ import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import FileExplorer from "./components/FileExplorer";
-import AdminPanel from "./components/AdminPanel";
-import AdminLogin from "./components/AdminLogin";
 import Account from "./components/Account";
 import PreviewPage from "./components/PreviewPage";
 import Footer from "./components/Footer";
+import Home from "./components/Home";
+import Search from "./components/Search";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
   return token ? children : <Navigate to="/login" />;
-};
-
-const AdminRoute = ({ children }) => {
-  const { isAdmin } = useSelector((state) => state.auth);
-  return isAdmin ? children : <Navigate to="/" />;
 };
 
 function App() {
@@ -27,13 +22,13 @@ function App() {
       <div style={{ paddingBottom: "50px" }}>
       <Header />
       <Routes>
+      <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/*" element={<FileExplorer />} />
-        <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
+        <Route path="/explorer/*" element={<FileExplorer />} />
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
         <Route path="/preview" element={<PreviewPage />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
       <Footer />
       </div>

@@ -18,9 +18,10 @@ const Header = () => {
 
   return (
     <nav style={styles.navbar}>
-      <h1 style={styles.title} onClick={() => navigate("/")}>
+      <h1 style={styles.navbar}>
         File Explorer
       </h1>
+      <Link to="/" style={styles.link}>Home</Link>
       <div>
         {token ? (
           <>

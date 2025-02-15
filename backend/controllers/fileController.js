@@ -50,3 +50,38 @@ exports.getFileContent = (req, res) => {
     res.status(500).json({ error: "Error streaming file" });
   }
 };
+
+const searchFilesRecursive = (dir, query, basePath = "", results = []) => {
+  const items = fs.readdirSync(dir);
+
+  items.forEach((item) => {
+    const fullPath = path.join(dir, item);
+    const relativePath = path.join(basePath, item);
+    const isDirectory = fs.lstatSync(fullPath).isDirectory();
+
+    if (item.toLowerCase().includes(query.toLowerCase())) {
+      results.push({ name: item, isDirectory, path: relativePath });
+    }
+
+    if (isDirectory) {
+      searchFilesRecursive(fullPath, query, relativePath, results);
+    }
+  });
+
+  return results;
+};
+
+exports.searchFiles = (req, res) => {
+  const query = req.query.q;
+  if (!query) {
+    return res.status(400).json({ error: "Search query is required." });
+  }
+
+  try {
+    const results = searchFilesRecursive(DATA_DIR, query);
+    res.json(results);
+  } catch (error) {
+    console.error("Error searching files:", error.message);
+    res.status(500).json({ error: "Error searching files." });
+  }
+};
