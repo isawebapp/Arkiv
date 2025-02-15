@@ -25,18 +25,18 @@ A **full-stack** web application for managing, storing, and accessing a collecti
 
 ## 📂 Project Structure
 
-file-library-main/ 
-│── backend/ 
-│ ├── data/ # PDF files & resources 
-│ ├── middleware/ # Authentication middleware 
-│ ├── routes/ # API endpoints (auth & files) 
-│ ├── server.js # Main server entry point 
-│── frontend/ 
-│ ├── src/ 
-│ │ ├── components/ # React components (UI) 
-│ │ ├── redux/ # State management with Redux 
-│ │ ├── utils/ # Utility functions (API calls) 
-│── README.md # Project documentation
+file-library-main/ /
+│── backend/ /
+│ ├── data/ # PDF files & resources /
+│ ├── middleware/ # Authentication middleware /
+│ ├── routes/ # API endpoints (auth & files) /
+│ ├── server.js # Main server entry point /
+│── frontend/ /
+│ ├── src/ /
+│ │ ├── components/ # React components (UI) /
+│ │ ├── redux/ # State management with Redux /
+│ │ ├── utils/ # Utility functions (API calls) /
+│── README.md # Project documentation /
 
 ## ⚙️ Installation & Setup
 
@@ -72,11 +72,11 @@ npm start
 
 ## 📜 API Endpoints
 
-|Method|Endpoint|Description| \
-|POST|/api/auth/register|Register a new user| \
-|POST|/api/auth/login	User|login| \
-|GET|/api/files	Fetch all|files| \
-|GET|/api/files/:id	Get a|specific file| \
+|Method|Endpoint|Description|
+|POST|/api/auth/register|Register a new user|
+|POST|/api/auth/login	User|login|
+|GET|/api/files	Fetch all|files|
+|GET|/api/files/:id	Get a|specific file|
 
 ## 🛠️ Future Enhancements
 
