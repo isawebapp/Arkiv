@@ -14,7 +14,7 @@ A **full-stack** web application for managing, storing, and accessing a collecti
 
 ### Backend
 - **Node.js** + **Express**
-- **MongoDB** (or any database for user authentication & file metadata)
+- **SQLite** (or any database for user authentication & file metadata)
 - **JWT** for authentication
 - **Multer** for file handling
 
