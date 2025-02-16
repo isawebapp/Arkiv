@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
         return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user.id }, config.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id }, config.server.JWT_SECRET, { expiresIn: "1h" });
 
     res.json({ token });
 });
@@ -55,7 +55,7 @@ router.get("/me", (req, res) => {
     const token = authHeader.split(" ")[1];
 
     try {
-        const decoded = jwt.verify(token, config.JWT_SECRET);
+        const decoded = jwt.verify(token, config.server.JWT_SECRET);
         res.json(decoded);
     } catch (error) {
         res.status(400).json({ error: "Invalid or expired token" });

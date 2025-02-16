@@ -1,0 +1,8 @@
+server:
+  JWT_SECRET: 'test'
+  port: 8001
+
+security:
+  explorer: true
+  preview: true
+  search: true

@@ -20,5 +20,4 @@ app.use(cors());
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/files", require("./routes/fileRoutes"));
 
-const PORT = config.port;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(config.server.port, () => console.log(`Server running on port ${config.server.port}`));
