@@ -4,7 +4,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadConfig from "../utils/config";
 
-const [PORT, setPort] = useState("");
+const Register = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [PORT, setPort] = useState("");
 
   useEffect(() => {
     loadConfig().then((config) => {
@@ -13,10 +16,6 @@ const [PORT, setPort] = useState("");
       }
     });
   }, []);
-
-const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();

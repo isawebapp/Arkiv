@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/authSlice";
@@ -7,49 +7,43 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadConfig from "../utils/config";
 
-const [PORT, setPort] = useState("");
-
-useEffect(() => {
-  loadConfig().then((config) => {
-    if (config && config.port) {
-      setPort(config.port);
-    }
-  });
-}, []);
-
-const API_BASE_URL = `http://localhost:${PORT}`;
-
 const Login = () => {
+  const [PORT, setPort] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    loadConfig().then((config) => {
+      if (config && config.port) {
+        setPort(config.port);
+      }
+    });
+  }, []);
+
+  const API_BASE_URL = `http://localhost:${PORT}`;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`${API_BASE_URL}/api/auth/login`, { username, password });
-
-      localStorage.setItem("token", data.token);
-      dispatch(loginSuccess(data));
+      const response = await axios.post(`${API_BASE_URL}/login`, { username, password });
+      dispatch(loginSuccess(response.data));
       toast.success("Login successful!");
-      navigate("/");
-
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
-      toast.error(error.response?.data?.error || "Login failed!");
+      toast.error("Login failed. Please check your credentials.");
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <ToastContainer />
       <form onSubmit={handleLogin}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
         <button type="submit">Login</button>
       </form>
-      <ToastContainer />
     </div>
   );
 };

@@ -1,24 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import loadConfig from "../utils/config";
 
-const [REACT_APP_DEPLOY_URL, setApiDeployUrl] = useState("");
-
-useEffect(() => {
-  loadConfig().then((config) => {
-    if (config && config.REACT_APP_DEPLOY_URL) {
-      setApiDeployUrl(config.REACT_APP_DEPLOY_URL);
-    }
-  });
-}, []);
-
 const Footer = () => {
+  const [URL, setURL] = useState("");
+
+  useEffect(() => {
+    loadConfig().then((config) => {
+      if (config && config.url) {
+        setURL(config.url);
+      }
+    });
+  }, []);
+
   return (
     <footer style={styles.footer}>
       <p>
         Powered by{" "}
-        {REACT_APP_DEPLOY_URL ? (
-          <a href={REACT_APP_DEPLOY_URL} target="_blank" rel="noopener noreferrer" style={styles.link}>
-            {REACT_APP_DEPLOY_URL.replace(/^https?:\/\//, "")}
+        {URL ? (
+          <a href={URL} target="_blank" rel="noopener noreferrer" style={styles.link}>
+            {URL.replace(/^https?:\/\//, "")}
           </a>
         ) : (
           "Unknown Source"

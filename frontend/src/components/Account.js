@@ -5,7 +5,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadConfig from "../utils/config";
 
-const [PORT, setPort] = useState("");
+const Account = () => {
+  const [user, setUser] = useState(null);
+  const [PORT, setPort] = useState("");
 
   useEffect(() => {
     loadConfig().then((config) => {
@@ -14,9 +16,6 @@ const [PORT, setPort] = useState("");
       }
     });
   }, []);
-
-const Account = () => {
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     axios.get(`http://localhost:${PORT}/api/auth/me`, getAuthHeaders())

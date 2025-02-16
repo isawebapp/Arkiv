@@ -3,25 +3,24 @@ import { useLocation } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 import loadConfig from "../utils/config";
 
-const [API_BASE_URL, setApiBaseUrl] = useState("");
-
-useEffect(() => {
-  loadConfig().then((config) => {
-    if (config && config.REACT_APP_API_BASE_URL) {
-      setApiBaseUrl(config.REACT_APP_API_BASE_URL);
-    }
-  });
-}, []);
-
 const PreviewPage = () => {
   const location = useLocation();
   const filePath = new URLSearchParams(location.search).get("filePath");
   const [fileUrl, setFileUrl] = useState("");
   const [error, setError] = useState(null);
+  const [PORT, setPort] = useState("");
+
+  useEffect(() => {
+    loadConfig().then((config) => {
+      if (config && config.port) {
+        setPort(config.port);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (filePath) {
-      const filePreviewUrl = `${API_BASE_URL}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
+      const filePreviewUrl = `http://localhost:${PORT}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
 
       fetch(filePreviewUrl)
         .then(response => {
@@ -38,7 +37,7 @@ const PreviewPage = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
+      const response = await fetch(`http://localhost:${PORT}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
       if (!response.ok) throw new Error("File not found");
 
       const blob = await response.blob();

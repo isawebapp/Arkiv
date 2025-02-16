@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadConfig from "../utils/config";
 
-const [PORT, setPort] = useState("");
+const Search = () => {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const navigate = useNavigate();
+  const [PORT, setPort] = useState("");
 
   useEffect(() => {
     loadConfig().then((config) => {
@@ -14,11 +18,6 @@ const [PORT, setPort] = useState("");
       }
     });
   }, []);
-
-const Search = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const navigate = useNavigate();
 
   const handleSearch = async (e) => {
     e.preventDefault();
