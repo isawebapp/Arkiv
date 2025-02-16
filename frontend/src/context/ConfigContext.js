@@ -8,7 +8,7 @@ export const ConfigProvider = ({ children }) => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const response = await fetch("http://localhost:16000/config");
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/config`);
         if (!response.ok) throw new Error("Config file not found");
 
         const jsonConfig = await response.json();
