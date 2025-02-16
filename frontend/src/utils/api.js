@@ -1,6 +1,23 @@
 import axios from "axios";
+import loadConfig from "./config";
 
-const API_BASE_URL = "http://localhost:5000";
+const [PORT, setPort] = useState("");
+
+useEffect(() => {
+  loadConfig()
+    .then((config) => {
+      if (config && config.port) {
+        setPort(config.port);
+      } else {
+        console.error("PORT not found in config.yml");
+        setError("Server configuration is missing.");
+      }
+    })
+    .catch((err) => {
+      console.error("Error loading config:", err);
+      setError("Failed to load server configuration.");
+    });
+}, []);
 
 export const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -11,7 +28,7 @@ export const getAuthHeaders = () => {
 
 export const getCurrentUser = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/auth/me`, getAuthHeaders());
+    const response = await axios.get(`http://localhost:${PORT}/api/auth/me`, getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error("Auth error:", error.response?.data || error.message);
@@ -21,7 +38,7 @@ export const getCurrentUser = async () => {
 
 export const getProtectedData = async (endpoint) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}${endpoint}`, getAuthHeaders());
+    const response = await axios.get(`http://localhost:${PORT}${endpoint}`, getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error("Protected API error:", error.response?.data || error.message);
