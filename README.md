@@ -28,16 +28,16 @@ A **full-stack** web application for managing, storing, and accessing a collecti
 ```
 file-library-main/
 │── backend/ 
-│ ├── data/ # PDF files & resources 
-│ ├── middleware/ # Authentication middleware 
-│ ├── routes/ # API endpoints (auth & files) 
-│ ├── server.js # Main server entry point 
+│ ├── data/         # PDF files & resources 
+│ ├── middleware/   # Authentication middleware 
+│ ├── routes/       # API endpoints (auth & files) 
+│ ├── server.js     # Main server entry point 
 │── frontend/ 
 │ ├── src/ 
 │ │ ├── components/ # React components (UI) 
-│ │ ├── redux/ # State management with Redux 
-│ │ ├── utils/ # Utility functions (API calls) 
-│── README.md # Project documentation 
+│ │ ├── redux/      # State management with Redux 
+│ │ ├── utils/      # Utility functions (API calls) 
+│── README.md       # Project documentation 
 ```
 
 ## ⚙️ Installation & Setup
