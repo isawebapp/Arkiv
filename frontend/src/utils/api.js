@@ -4,19 +4,11 @@ import loadConfig from "./config";
 const [PORT, setPort] = useState("");
 
 useEffect(() => {
-  loadConfig()
-    .then((config) => {
-      if (config && config.port) {
-        setPort(config.port);
-      } else {
-        console.error("PORT not found in config.yml");
-        setError("Server configuration is missing.");
-      }
-    })
-    .catch((err) => {
-      console.error("Error loading config:", err);
-      setError("Failed to load server configuration.");
-    });
+  loadConfig().then((config) => {
+    if (config && config.port) {
+      setPort(config.port);
+    }
+  });
 }, []);
 
 export const getAuthHeaders = () => {
