@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -10,6 +10,7 @@ const Search = () => {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const config = useConfig();
+  if (!config) return <p>Loading configuration...</p>;
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const Search = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:${config.server.port}/api/files/search`, {
+      const response = await axios.get(`${config.server.hostname}:${config.server.port}/api/files/search`, {
         params: { q: query },
       });
       setResults(response.data);
@@ -36,19 +37,6 @@ const Search = () => {
   const openFilePreview = (filePath) => {
     navigate(`/preview?filePath=${encodeURIComponent(filePath)}`);
   };
-
-  if (!config) {
-    return <p>Loading configuration...</p>;
-  }
-
-  if (!config.features.search) {
-    return (
-      <div>
-        <h2>Search Files</h2>
-        <p>File search is disabled. Please contact support.</p>
-      </div>
-    );
-  }
 
   return (
     <div>

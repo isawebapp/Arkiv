@@ -28,10 +28,10 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:${config.server.port}/login`, { username, password });
+      const response = await axios.post(`${config.server.hostname}:${config.server.port}/api/auth/login`, { username, password });
       dispatch(loginSuccess(response.data));
       toast.success("Login successful!");
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
     }

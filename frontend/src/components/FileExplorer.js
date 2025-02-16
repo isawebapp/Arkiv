@@ -18,7 +18,7 @@ const FileExplorer = () => {
     }
 
     try {
-      const { data } = await axios.get(`http://localhost:${config.server.port}/api/files?folder=${currentPath}`);
+      const { data } = await axios.get(`${config.server.hostname}:${config.server.port}/api/files?folder=${currentPath}`);
       setFiles(data);
       setError(null);
     } catch (error) {

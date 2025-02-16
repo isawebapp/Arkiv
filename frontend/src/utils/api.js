@@ -13,7 +13,7 @@ export const getCurrentUser = async () => {
   if (!config) return <p>Loading configuration...</p>;
 
   try {
-    const response = await axios.get(`http://localhost:${config.server.port}/api/auth/me`, getAuthHeaders());
+    const response = await axios.get(`${config.server.hostname}:${config.server.port}/api/auth/me`, getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error("Auth error:", error.response?.data || error.message);
@@ -26,7 +26,7 @@ export const getProtectedData = async (endpoint) => {
   if (!config) return <p>Loading configuration...</p>;
   
   try {
-    const response = await axios.get(`http://localhost:${config.server.port}${endpoint}`, getAuthHeaders());
+    const response = await axios.get(`${config.server.hostname}:${config.server.port}${endpoint}`, getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error("Protected API error:", error.response?.data || error.message);

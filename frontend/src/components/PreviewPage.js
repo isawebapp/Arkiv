@@ -12,7 +12,7 @@ const PreviewPage = () => {
 
   useEffect(() => {
     if (config?.server.port && filePath) {
-      const filePreviewUrl = `http://localhost:${config.server.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
+      const filePreviewUrl = `${config.server.hostname}:${config.server.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
 
       fetch(filePreviewUrl)
         .then((response) => {
@@ -29,7 +29,7 @@ const PreviewPage = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await fetch(`http://localhost:${config.server.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
+      const response = await fetch(`${config.server.hostname}:${config.server.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
       if (!response.ok) throw new Error("File not found");
 
       const blob = await response.blob();
