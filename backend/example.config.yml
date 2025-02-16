@@ -1,8 +1,12 @@
 server:
   JWT_SECRET: 'test'
+  url: "https://example.com"
+  hostname: "http://localhost"
   port: 8001
 
-security:
+features: 
+  login: true
+  register: true
   explorer: true
-  preview: true
   search: true
+  preview: true
