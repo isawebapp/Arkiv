@@ -3,6 +3,17 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loadConfig from "../utils/config";
+
+const [PORT, setPort] = useState("");
+
+  useEffect(() => {
+    loadConfig().then((config) => {
+      if (config && config.port) {
+        setPort(config.port);
+      }
+    });
+  }, []);
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -17,7 +28,7 @@ const Search = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:5000/api/files/search", {
+      const response = await axios.get(`http://localhost:${PORT}/api/files/search`, {
         params: { q: query },
       });
       setResults(response.data);

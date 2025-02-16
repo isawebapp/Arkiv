@@ -3,13 +3,24 @@ import axios from "axios";
 import { getAuthHeaders } from "../utils/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loadConfig from "../utils/config";
+
+const [PORT, setPort] = useState("");
+
+  useEffect(() => {
+    loadConfig().then((config) => {
+      if (config && config.port) {
+        setPort(config.port);
+      }
+    });
+  }, []);
 
 const Account = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/auth/me", getAuthHeaders())
-      .then(response => setUser(response.data))
+    axios.get(`http://localhost:${PORT}/api/auth/me`, getAuthHeaders())
+    .then(response => setUser(response.data))
       .catch(error => toast.error("Failed to fetch account details"));
   }, []);
 

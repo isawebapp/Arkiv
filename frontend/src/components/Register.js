@@ -2,6 +2,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loadConfig from "../utils/config";
+
+const [PORT, setPort] = useState("");
+
+  useEffect(() => {
+    loadConfig().then((config) => {
+      if (config && config.port) {
+        setPort(config.port);
+      }
+    });
+  }, []);
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -10,7 +21,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post(`http://localhost:${PORT}/api/auth/register`, {
         username,
         password,
       });

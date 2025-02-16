@@ -1,6 +1,15 @@
 import React from "react";
+import loadConfig from "../utils/config";
 
-const REACT_APP_DEPLOY_URL = process.env.REACT_APP_DEPLOY_URL;
+const [REACT_APP_DEPLOY_URL, setApiDeployUrl] = useState("");
+
+useEffect(() => {
+  loadConfig().then((config) => {
+    if (config && config.REACT_APP_DEPLOY_URL) {
+      setApiDeployUrl(config.REACT_APP_DEPLOY_URL);
+    }
+  });
+}, []);
 
 const Footer = () => {
   return (

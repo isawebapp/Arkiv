@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
+import loadConfig from "../utils/config";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const [API_BASE_URL, setApiBaseUrl] = useState("");
+
+useEffect(() => {
+  loadConfig().then((config) => {
+    if (config && config.REACT_APP_API_BASE_URL) {
+      setApiBaseUrl(config.REACT_APP_API_BASE_URL);
+    }
+  });
+}, []);
 
 const PreviewPage = () => {
   const location = useLocation();

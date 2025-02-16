@@ -5,8 +5,19 @@ import { loginSuccess } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loadConfig from "../utils/config";
 
-const API_BASE_URL = "http://localhost:5000";
+const [PORT, setPort] = useState("");
+
+useEffect(() => {
+  loadConfig().then((config) => {
+    if (config && config.port) {
+      setPort(config.port);
+    }
+  });
+}, []);
+
+const API_BASE_URL = `http://localhost:${PORT}`;
 
 const Login = () => {
   const [username, setUsername] = useState("");
