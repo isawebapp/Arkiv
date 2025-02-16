@@ -9,10 +9,10 @@ export const ConfigProvider = ({ children }) => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const response = await fetch("/config.yml"); // Fetch config file
-        const text = await response.text(); // Convert response to text
-        const parsedConfig = yaml.load(text); // Parse YAML into JS object
-        setConfig(parsedConfig); // Store config in state
+        const response = await fetch("/config.yml");
+        const text = await response.text();
+        const parsedConfig = yaml.load(text);
+        setConfig(parsedConfig);
       } catch (error) {
         console.error("Error loading config:", error);
       }

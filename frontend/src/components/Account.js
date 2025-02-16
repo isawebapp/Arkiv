@@ -11,7 +11,7 @@ const Account = () => {
   if (!config) return <p>Loading configuration...</p>;
 
   useEffect(() => {
-    axios.get(`http://localhost:${config.port}/api/auth/me`, getAuthHeaders())
+    axios.get(`http://localhost:${config.server.port}/api/auth/me`, getAuthHeaders())
       .then(response => setUser(response.data))
       .catch(error => toast.error("Failed to fetch account details"));
   }, []);

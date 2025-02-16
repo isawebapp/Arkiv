@@ -9,9 +9,9 @@ const Footer = () => {
     <footer style={styles.footer}>
       <p>
         Powered by{" "}
-        {config.url ? (
-          <a href={config.url} target="_blank" rel="noopener noreferrer" style={styles.link}>
-            {config.url.replace(/^https?:\/\//, "")}
+        {config.server.url ? (
+          <a href={config.server.url} target="_blank" rel="noopener noreferrer" style={styles.link}>
+            {config.server.url.replace(/^https?:\/\//, "")}
           </a>
         ) : (
           "Unknown Source"

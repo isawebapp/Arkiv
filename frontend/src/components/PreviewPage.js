@@ -9,29 +9,27 @@ const PreviewPage = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [error, setError] = useState(null);
   const config = useConfig();
-  if (!config) return <p>Loading configuration...</p>;
 
   useEffect(() => {
-    if (filePath) {
-      const filePreviewUrl = `http://localhost:${config.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
+    if (config?.server.port && filePath) {
+      const filePreviewUrl = `http://localhost:${config.server.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
 
       fetch(filePreviewUrl)
-        .then(response => {
+        .then((response) => {
           if (!response.ok) throw new Error("File not found");
           return response.blob();
         })
-        .then(blob => {
+        .then((blob) => {
           const url = URL.createObjectURL(blob);
           setFileUrl(url);
         })
         .catch(() => setError("File not found"));
     }
-  }, [filePath]);
+  }, [filePath, config?.server.port]);
 
   const handleDownload = async () => {
-
     try {
-      const response = await fetch(`http://localhost:${config.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
+      const response = await fetch(`http://localhost:${config.server.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
       if (!response.ok) throw new Error("File not found");
 
       const blob = await response.blob();
@@ -51,6 +49,19 @@ const PreviewPage = () => {
     }
   };
 
+  if (!config) {
+    return <p>Loading configuration...</p>;
+  }
+
+  if (!config.features.preview) {
+    return (
+      <div>
+        <h2>File Preview</h2>
+        <p>File preview is disabled. Please contact support.</p>
+      </div>
+    );
+  }
+
   if (error) {
     return <ErrorPage message={error} />;
   }
@@ -62,7 +73,7 @@ const PreviewPage = () => {
         <>
           <div style={styles.buttonContainer}>
             <button style={styles.downloadButton} onClick={() => window.history.back()}>Back</button>
-            <hr></hr>
+            <hr />
             <button style={styles.downloadButton} onClick={handleDownload}>⬇ Download</button>
           </div>
           <object data={fileUrl} type="application/pdf" style={styles.pdf}>

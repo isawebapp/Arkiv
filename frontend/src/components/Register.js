@@ -8,12 +8,22 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const config = useConfig();
+
   if (!config) return <p>Loading configuration...</p>;
+
+  if (!config.features.register) {
+    return (
+      <div>
+        <h2>Register</h2>
+        <p>Registration is disabled. Please contact support.</p>
+      </div>
+    );
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:${config.port}/api/auth/register`, {
+      await axios.post(`http://localhost:${config.server.port}/api/auth/register`, {
         username,
         password,
       });

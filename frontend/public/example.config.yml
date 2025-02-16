@@ -1,2 +1,10 @@
-url: ""
-port: 0
+server:
+  url: "https://example.com"
+  port: 8000
+
+features: 
+  login: false
+  register: false
+  explorer: true
+  search: true
+  preview: true

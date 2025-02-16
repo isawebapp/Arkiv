@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/authSlice";
@@ -13,12 +13,22 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const config = useConfig();
+
   if (!config) return <p>Loading configuration...</p>;
+
+  if (!config.features.login) {
+    return (
+      <div>
+        <h2>Login</h2>
+        <p>Login is disabled.</p>
+      </div>
+    );
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:${config.port}/login`, { username, password });
+      const response = await axios.post(`http://localhost:${config.server.port}/login`, { username, password });
       dispatch(loginSuccess(response.data));
       toast.success("Login successful!");
       navigate("/dashboard");
@@ -29,6 +39,7 @@ const Login = () => {
 
   return (
     <div>
+      <h2>Login</h2>
       <ToastContainer />
       <form onSubmit={handleLogin}>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />

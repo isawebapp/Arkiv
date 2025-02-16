@@ -10,31 +10,41 @@ const FileExplorer = () => {
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(null);
   const config = useConfig();
-  if (!config) return <p>Loading configuration...</p>;
 
   const fetchFiles = useCallback(async () => {
-
-    if (!config.port) {
+    if (!config?.server.port) {
       console.warn("Skipping fetchFiles() because PORT is not set.");
       return;
     }
 
     try {
-      console.log(`Fetching files from: http://localhost:${config.port}/api/files?folder=${currentPath}`);
-      const { data } = await axios.get(`http://localhost:${config.port}/api/files?folder=${currentPath}`);
+      const { data } = await axios.get(`http://localhost:${config.server.port}/api/files?folder=${currentPath}`);
       setFiles(data);
       setError(null);
     } catch (error) {
       console.error("Error fetching files:", error.response?.data || error.message);
       setError("Directory not found.");
     }
-  }, [config.port, currentPath]);
+  }, [config?.server.port, currentPath]);
 
   useEffect(() => {
-    if (config.port) {
+    if (config?.server.port) {
       fetchFiles();
     }
-  }, [fetchFiles, config.port]);
+  }, [fetchFiles, config?.server.port]);
+
+  if (!config) {
+    return <p>Loading configuration...</p>;
+  }
+
+  if (!config.features.explorer) {
+    return (
+      <div>
+        <h2>File Explorer</h2>
+        <p>File browsing is disabled. Please contact support.</p>
+      </div>
+    );
+  }
 
   if (error) {
     return <ErrorPage message={error} />;
