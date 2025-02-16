@@ -74,11 +74,12 @@ npm start
 
 ## 📜 API Endpoints
 
-|Method|Endpoint|Description|
-|POST|/api/auth/register|Register a new user|
-|POST|/api/auth/login	User|login|
-|GET|/api/files	Fetch all|files|
-|GET|/api/files/:id	Get a|specific file|
+| Method | Endpoint           | Description             |
+|--------|-------------------|-------------------------|
+| POST   | /api/auth/register | Register a new user     |
+| POST   | /api/auth/login    | User login              |
+| GET    | /api/files         | Fetch all files         |
+| GET    | /api/files/:id     | Get a specific file     |
 
 ## 🛠️ Future Enhancements
 
