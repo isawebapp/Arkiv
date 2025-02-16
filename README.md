@@ -1,4 +1,4 @@
-# 📂 File Library System
+# 📂 Arkiv - A File Library System
 
 A **full-stack** web application for managing, storing, and accessing a collection of PDF files. This project includes **user authentication**, a **file explorer**, and **search functionality**.
 
@@ -25,27 +25,29 @@ A **full-stack** web application for managing, storing, and accessing a collecti
 
 ## 📂 Project Structure
 
-file-library-main/ <br />
-│── backend/ <br />
-│ ├── data/ # PDF files & resources <br />
-│ ├── middleware/ # Authentication middleware <br />
-│ ├── routes/ # API endpoints (auth & files) <br />
-│ ├── server.js # Main server entry point <br />
-│── frontend/ <br />
-│ ├── src/ <br />
-│ │ ├── components/ # React components (UI) <br />
-│ │ ├── redux/ # State management with Redux <br />
-│ │ ├── utils/ # Utility functions (API calls) <br />
-│── README.md # Project documentation <br />
+```
+file-library-main/
+│── backend/ 
+│ ├── data/ # PDF files & resources 
+│ ├── middleware/ # Authentication middleware 
+│ ├── routes/ # API endpoints (auth & files) 
+│ ├── server.js # Main server entry point 
+│── frontend/ 
+│ ├── src/ 
+│ │ ├── components/ # React components (UI) 
+│ │ ├── redux/ # State management with Redux 
+│ │ ├── utils/ # Utility functions (API calls) 
+│── README.md # Project documentation 
+```
 
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/your-username/file-library-main.git
+git clone https://github.com/isawebapp/Arkiv.git
 ```
 ```sh
-cd file-library-main
+cd Arkiv
 ```
 ### 2️⃣ Backend Setup
 
