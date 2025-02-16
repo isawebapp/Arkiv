@@ -31,4 +31,6 @@ app.get("/config", (req, res) => {
     }
 });
 
-app.listen(config.server.port, () => console.log(`Server running on port ${config.server.port}`));
+const HOST = "127.0.0.1";
+
+app.listen(config.server.port, HOST, () => console.log(`Server running at http://${HOST}:${config.server.port}`));
