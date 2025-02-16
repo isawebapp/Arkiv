@@ -3,21 +3,29 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loadConfig from "../utils/config";
 
 const Search = () => {
+  const [config, setConfig] = useState(null);
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch("/config.yml");
+        const text = await response.text();
+        const parsedConfig = yaml.load(text);
+        setConfig(parsedConfig);
+      } catch (error) {
+        console.error("Error loading config:", error);
+      }
+    };
+
+    fetchConfig();
+  }, []);
+
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
-  const [PORT, setPort] = useState("");
 
-  useEffect(() => {
-    loadConfig().then((config) => {
-      if (config && config.port) {
-        setPort(config.port);
-      }
-    });
-  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -27,7 +35,7 @@ const Search = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:${PORT}/api/files/search`, {
+      const response = await axios.get(`http://localhost:${config.port}/api/files/search`, {
         params: { q: query },
       });
       setResults(response.data);

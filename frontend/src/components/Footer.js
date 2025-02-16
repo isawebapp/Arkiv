@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
-import loadConfig from "../utils/config";
 
 const Footer = () => {
-  const [URL, setURL] = useState("");
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    loadConfig().then((config) => {
-      if (config && config.url) {
-        setURL(config.url);
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch("/config.yml");
+        const text = await response.text();
+        const parsedConfig = yaml.load(text);
+        setConfig(parsedConfig);
+      } catch (error) {
+        console.error("Error loading config:", error);
       }
-    });
+    };
+
+    fetchConfig();
   }, []);
 
   return (
     <footer style={styles.footer}>
       <p>
         Powered by{" "}
-        {URL ? (
-          <a href={URL} target="_blank" rel="noopener noreferrer" style={styles.link}>
-            {URL.replace(/^https?:\/\//, "")}
+        {config.url? (
+          <a href={config.url} target="_blank" rel="noopener noreferrer" style={styles.link}>
+            {config.url.replace(/^https?:\/\//, "")}
           </a>
         ) : (
           "Unknown Source"

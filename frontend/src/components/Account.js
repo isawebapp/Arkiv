@@ -3,23 +3,29 @@ import axios from "axios";
 import { getAuthHeaders } from "../utils/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loadConfig from "../utils/config";
 
 const Account = () => {
   const [user, setUser] = useState(null);
-  const [PORT, setPort] = useState("");
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    loadConfig().then((config) => {
-      if (config && config.port) {
-        setPort(config.port);
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch("/config.yml");
+        const text = await response.text();
+        const parsedConfig = yaml.load(text);
+        setConfig(parsedConfig);
+      } catch (error) {
+        console.error("Error loading config:", error);
       }
-    });
+    };
+
+    fetchConfig();
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:${PORT}/api/auth/me`, getAuthHeaders())
-    .then(response => setUser(response.data))
+    axios.get(`http://localhost:${config.port}/api/auth/me`, getAuthHeaders())
+      .then(response => setUser(response.data))
       .catch(error => toast.error("Failed to fetch account details"));
   }, []);
 

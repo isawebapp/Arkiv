@@ -2,53 +2,52 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ErrorPage from "./ErrorPage";
-import loadConfig from "../utils/config";
 
 const FileExplorer = () => {
   const navigate = useNavigate();
   const { "*": currentPath = "" } = useParams();
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(null);
-  const [PORT, setPort] = useState(null);
-
-  useEffect(() => {
-    loadConfig()
-      .then((config) => {
-        if (config && config.port) {
-          setPort(config.port);
-        } else {
-          console.error("PORT not found in config.yml");
-          setError("Server configuration is missing.");
-        }
-      })
-      .catch((err) => {
-        console.error("Error loading config:", err);
-        setError("Failed to load server configuration.");
-      });
-  }, []);
 
   const fetchFiles = useCallback(async () => {
-    if (!PORT) {
+    const [config, setConfig] = useState(null);
+
+    useEffect(() => {
+      const fetchConfig = async () => {
+        try {
+          const response = await fetch("/config.yml");
+          const text = await response.text();
+          const parsedConfig = yaml.load(text);
+          setConfig(parsedConfig);
+        } catch (error) {
+          console.error("Error loading config:", error);
+        }
+      };
+
+      fetchConfig();
+    }, []);
+
+    if (!config.port) {
       console.warn("Skipping fetchFiles() because PORT is not set.");
       return;
     }
 
     try {
-      console.log(`Fetching files from: http://localhost:${PORT}/api/files?folder=${currentPath}`);
-      const { data } = await axios.get(`http://localhost:${PORT}/api/files?folder=${currentPath}`);
+      console.log(`Fetching files from: http://localhost:${config.port}/api/files?folder=${currentPath}`);
+      const { data } = await axios.get(`http://localhost:${config.port}/api/files?folder=${currentPath}`);
       setFiles(data);
       setError(null);
     } catch (error) {
       console.error("Error fetching files:", error.response?.data || error.message);
       setError("Directory not found.");
     }
-  }, [PORT, currentPath]);
+  }, [config.port, currentPath]);
 
   useEffect(() => {
-    if (PORT) {
+    if (config.port) {
       fetchFiles();
     }
-  }, [fetchFiles, PORT]);
+  }, [fetchFiles, config.port]);
 
   if (error) {
     return <ErrorPage message={error} />;

@@ -2,25 +2,31 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loadConfig from "../utils/config";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [PORT, setPort] = useState("");
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    loadConfig().then((config) => {
-      if (config && config.port) {
-        setPort(config.port);
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch("/config.yml");
+        const text = await response.text();
+        const parsedConfig = yaml.load(text);
+        setConfig(parsedConfig);
+      } catch (error) {
+        console.error("Error loading config:", error);
       }
-    });
+    };
+
+    fetchConfig();
   }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:${PORT}/api/auth/register`, {
+      await axios.post(`http://localhost:${config.port}/api/auth/register`, {
         username,
         password,
       });

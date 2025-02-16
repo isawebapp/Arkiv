@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
-import loadConfig from "../utils/config";
 
 const PreviewPage = () => {
   const location = useLocation();
   const filePath = new URLSearchParams(location.search).get("filePath");
   const [fileUrl, setFileUrl] = useState("");
   const [error, setError] = useState(null);
-  const [PORT, setPort] = useState("");
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    loadConfig().then((config) => {
-      if (config && config.port) {
-        setPort(config.port);
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch("/config.yml");
+        const text = await response.text();
+        const parsedConfig = yaml.load(text);
+        setConfig(parsedConfig);
+      } catch (error) {
+        console.error("Error loading config:", error);
       }
-    });
+    };
+
+    fetchConfig();
   }, []);
 
   useEffect(() => {
     if (filePath) {
-      const filePreviewUrl = `http://localhost:${PORT}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
+      const filePreviewUrl = `http://localhost:${config.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`;
 
       fetch(filePreviewUrl)
         .then(response => {
@@ -36,8 +42,24 @@ const PreviewPage = () => {
   }, [filePath]);
 
   const handleDownload = async () => {
+    const [config, setConfig] = useState(null);
+
+    useEffect(() => {
+      const fetchConfig = async () => {
+        try {
+          const response = await fetch("/config.yml");
+          const text = await response.text();
+          const parsedConfig = yaml.load(text);
+          setConfig(parsedConfig);
+        } catch (error) {
+          console.error("Error loading config:", error);
+        }
+      };
+
+      fetchConfig();
+    }, []);
     try {
-      const response = await fetch(`http://localhost:${PORT}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
+      const response = await fetch(`http://localhost:${config.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
       if (!response.ok) throw new Error("File not found");
 
       const blob = await response.blob();
