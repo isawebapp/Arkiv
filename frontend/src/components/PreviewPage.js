@@ -1,28 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
+import { useConfig } from "../context/ConfigContext";
 
 const PreviewPage = () => {
   const location = useLocation();
   const filePath = new URLSearchParams(location.search).get("filePath");
   const [fileUrl, setFileUrl] = useState("");
   const [error, setError] = useState(null);
-  const [config, setConfig] = useState(null);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch("/config.yml");
-        const text = await response.text();
-        const parsedConfig = yaml.load(text);
-        setConfig(parsedConfig);
-      } catch (error) {
-        console.error("Error loading config:", error);
-      }
-    };
-
-    fetchConfig();
-  }, []);
+  const config = useConfig();
+  if (!config) return <p>Loading configuration...</p>;
 
   useEffect(() => {
     if (filePath) {
@@ -42,22 +29,7 @@ const PreviewPage = () => {
   }, [filePath]);
 
   const handleDownload = async () => {
-    const [config, setConfig] = useState(null);
 
-    useEffect(() => {
-      const fetchConfig = async () => {
-        try {
-          const response = await fetch("/config.yml");
-          const text = await response.text();
-          const parsedConfig = yaml.load(text);
-          setConfig(parsedConfig);
-        } catch (error) {
-          console.error("Error loading config:", error);
-        }
-      };
-
-      fetchConfig();
-    }, []);
     try {
       const response = await fetch(`http://localhost:${config.port}/api/files/view?filePath=${encodeURIComponent(filePath)}`);
       if (!response.ok) throw new Error("File not found");

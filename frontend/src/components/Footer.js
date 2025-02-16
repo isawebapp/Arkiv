@@ -1,28 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useConfig } from "../context/ConfigContext";
 
 const Footer = () => {
-  const [config, setConfig] = useState(null);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch("/config.yml");
-        const text = await response.text();
-        const parsedConfig = yaml.load(text);
-        setConfig(parsedConfig);
-      } catch (error) {
-        console.error("Error loading config:", error);
-      }
-    };
-
-    fetchConfig();
-  }, []);
-
+  const config = useConfig();
+  if (!config) return <p>Loading configuration...</p>;
+  
   return (
     <footer style={styles.footer}>
       <p>
         Powered by{" "}
-        {config.url? (
+        {config.url ? (
           <a href={config.url} target="_blank" rel="noopener noreferrer" style={styles.link}>
             {config.url.replace(/^https?:\/\//, "")}
           </a>

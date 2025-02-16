@@ -2,30 +2,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ErrorPage from "./ErrorPage";
+import { useConfig } from "../context/ConfigContext";
 
 const FileExplorer = () => {
   const navigate = useNavigate();
   const { "*": currentPath = "" } = useParams();
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(null);
+  const config = useConfig();
+  if (!config) return <p>Loading configuration...</p>;
 
   const fetchFiles = useCallback(async () => {
-    const [config, setConfig] = useState(null);
-
-    useEffect(() => {
-      const fetchConfig = async () => {
-        try {
-          const response = await fetch("/config.yml");
-          const text = await response.text();
-          const parsedConfig = yaml.load(text);
-          setConfig(parsedConfig);
-        } catch (error) {
-          console.error("Error loading config:", error);
-        }
-      };
-
-      fetchConfig();
-    }, []);
 
     if (!config.port) {
       console.warn("Skipping fetchFiles() because PORT is not set.");

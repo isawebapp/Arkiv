@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import yaml from "js-yaml";
+import { useConfig } from "../context/ConfigContext";
 
 export const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -10,22 +9,8 @@ export const getAuthHeaders = () => {
 };
 
 export const getCurrentUser = async () => {
-  const [config, setConfig] = useState(null);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch("/config.yml");
-        const text = await response.text();
-        const parsedConfig = yaml.load(text);
-        setConfig(parsedConfig);
-      } catch (error) {
-        console.error("Error loading config:", error);
-      }
-    };
-
-    fetchConfig();
-  }, []);
+  const config = useConfig();
+  if (!config) return <p>Loading configuration...</p>;
 
   try {
     const response = await axios.get(`http://localhost:${config.port}/api/auth/me`, getAuthHeaders());
@@ -37,22 +22,9 @@ export const getCurrentUser = async () => {
 };
 
 export const getProtectedData = async (endpoint) => {
-  const [config, setConfig] = useState(null);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch("/config.yml");
-        const text = await response.text();
-        const parsedConfig = yaml.load(text);
-        setConfig(parsedConfig);
-      } catch (error) {
-        console.error("Error loading config:", error);
-      }
-    };
-
-    fetchConfig();
-  }, []);
+  const config = useConfig();
+  if (!config) return <p>Loading configuration...</p>;
+  
   try {
     const response = await axios.get(`http://localhost:${config.port}${endpoint}`, getAuthHeaders());
     return response.data;
