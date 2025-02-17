@@ -15,7 +15,7 @@ const Register = () => {
     return (
       <div>
         <h2>Register</h2>
-        <p>Registration is disabled. Please contact support.</p>
+        <p>Registration is disabled.</p>
       </div>
     );
   }
@@ -23,7 +23,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${config.server.hostname}:${config.server.port}/api/auth/register`, {
+      await axios.post(`${config.server.hostname}:${config.server.hostPort}/api/auth/register`, {
         username,
         password,
       });

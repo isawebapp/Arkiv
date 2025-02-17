@@ -20,7 +20,7 @@ const Search = () => {
     }
 
     try {
-      const response = await axios.get(`${config.server.hostname}:${config.server.port}/api/files/search`, {
+      const response = await axios.get(`${config.server.hostname}:${config.server.hostPort}/api/files/search`, {
         params: { q: query },
       });
       setResults(response.data);

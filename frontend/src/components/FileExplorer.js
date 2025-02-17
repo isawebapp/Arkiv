@@ -12,26 +12,26 @@ const FileExplorer = () => {
   const config = useConfig();
 
   const fetchFiles = useCallback(async () => {
-    if (!config?.server.port) {
+    if (!config?.server.hostPort) {
       console.warn("Skipping fetchFiles() because PORT is not set.");
       return;
     }
 
     try {
-      const { data } = await axios.get(`${config.server.hostname}:${config.server.port}/api/files?folder=${currentPath}`);
+      const { data } = await axios.get(`${config.server.hostname}:${config.server.hostPort}/api/files?folder=${currentPath}`);
       setFiles(data);
       setError(null);
     } catch (error) {
       console.error("Error fetching files:", error.response?.data || error.message);
       setError("Directory not found.");
     }
-  }, [config?.server.port, currentPath]);
+  }, [config?.server.hostPort, currentPath]);
 
   useEffect(() => {
-    if (config?.server.port) {
+    if (config?.server.hostPort) {
       fetchFiles();
     }
-  }, [fetchFiles, config?.server.port]);
+  }, [fetchFiles, config?.server.hostPort]);
 
   if (!config) {
     return <p>Loading configuration...</p>;

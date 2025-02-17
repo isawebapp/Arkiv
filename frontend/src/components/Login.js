@@ -28,7 +28,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${config.server.hostname}:${config.server.port}/api/auth/login`, { username, password });
+      const response = await axios.post(`${config.server.hostname}:${config.server.hostPort}/api/auth/login`, { username, password });
       dispatch(loginSuccess(response.data));
       toast.success("Login successful!");
       navigate("/");
